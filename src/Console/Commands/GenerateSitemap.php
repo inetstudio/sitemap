@@ -39,33 +39,7 @@ class GenerateSitemap extends Command
                 $mapStyle = (isset($map['options']['style'])) ? $map['options']['style'] : 'sitemap';
                 $limit = (isset($map['options']['limit'])) ? $map['options']['limit'] : 0;
 
-                $except = (isset($map['except'])) ? $map['except'] : [];
-                $except = collect($except)->map(function ($item) {
-                    return ($item !== '/') ? trim($item, '/') : $item;
-                });
-
-                $items = [];
-
-                foreach ($map['sources'] as $source) {
-                    $items = array_merge($items, $this->getItems($source));
-                }
-
-                $items[] = [
-                    'loc' => url('/'),
-                    'lastmod' => Carbon::now()->toW3cString(),
-                    'priority' => '1.0',
-                    'freq' => 'daily',
-                ];
-
-                $items = collect($items)->filter(function ($value) use ($except) {
-                    foreach ($except as $pattern) {
-                        if (Str::is($pattern, trim(parse_url($value['loc'], PHP_URL_PATH), '/'))) {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                });
+                $items = $this->getItems($map);
 
                 $counter = 0;
                 $sitemapCounter = 0;
@@ -94,11 +68,51 @@ class GenerateSitemap extends Command
     /**
      * Получаем материалы.
      *
+     * @param $map
+     *
+     * @return static
+     */
+    private function getItems($map)
+    {
+        $except = (isset($map['except'])) ? $map['except'] : [];
+        $sources = isset($map['sources']) ? $map['sources'] : [];
+
+        $except = collect($except)->map(function ($item) {
+            return ($item !== '/') ? trim($item, '/') : $item;
+        });
+
+        $items = [];
+
+        foreach ($sources as $source) {
+            $items = array_merge($items, $this->getItemsFromSource($source));
+        }
+
+        $items[] = [
+            'loc' => url('/'),
+            'lastmod' => Carbon::now()->toW3cString(),
+            'priority' => '1.0',
+            'freq' => 'daily',
+        ];
+
+        return collect($items)->filter(function ($value) use ($except) {
+            foreach ($except as $pattern) {
+                if (Str::is($pattern, trim(parse_url($value['loc'], PHP_URL_PATH), '/'))) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+    }
+
+    /**
+     * Получаем материалы из источника.
+     *
      * @param $source
      *
      * @return mixed
      */
-    private function getItems($source)
+    private function getItemsFromSource($source)
     {
         $resolver = array_wrap($source);
 
