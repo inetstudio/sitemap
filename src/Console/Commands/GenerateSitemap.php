@@ -3,6 +3,7 @@
 namespace InetStudio\Sitemap\Console\Commands;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 
 class GenerateSitemap extends Command
@@ -37,7 +38,7 @@ class GenerateSitemap extends Command
                 $mapFormat = (isset($map['options']['format'])) ? $map['options']['format'] : 'xml';
                 $mapStyle = (isset($map['options']['style'])) ? $map['options']['style'] : 'sitemap';
                 $limit = (isset($map['options']['limit'])) ? $map['options']['limit'] : 0;
-                $exclude = (isset($map['exclude'])) ? $map['exclude'] : [];
+                $except = (isset($map['except'])) ? $map['except'] : [];
 
                 $items = [];
 
@@ -52,8 +53,18 @@ class GenerateSitemap extends Command
                     'freq' => 'daily',
                 ]);
 
-                $items = collect($items)->filter(function ($value) use ($exclude) {
-                    return (! in_array($value['loc'], $exclude));
+                $items = collect($items)->filter(function ($value) use ($except) {
+                    foreach ($except as $pattern) {
+                        if ($pattern !== '/') {
+                            $pattern = trim($pattern, '/');
+                        }
+                        
+                        if (Str::is($pattern, $value['loc'])) {
+                            return false;
+                        }
+                    }
+
+                    return true;
                 });
 
                 $counter = 0;

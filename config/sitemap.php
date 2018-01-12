@@ -16,7 +16,7 @@ return [
                 'pages' => '\InetStudio\Pages\Services\Front\PagesService@getSiteMapItems',
                 'tags' => '\InetStudio\Tags\Services\Front\TagsService@getSiteMapItems',
             ],
-            'exclude' => [],
+            'except' => [],
         ],
     ],
 
