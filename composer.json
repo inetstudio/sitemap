@@ -1,0 +1,27 @@
+{
+    "name": "inetstudio/sitemap",
+    "description": "Package for sitemap",
+    "homepage": "https://github.com/inetstudio/sitemap",
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Konstantin Bukin",
+        "email": "bukin@inetstudio.ru"
+      }
+    ],
+    "require": {
+      "roumen/sitemap": "2.7.*"
+    },
+    "autoload": {
+      "psr-4": {
+        "InetStudio\\Sitemap\\": "src/"
+      }
+    },
+    "extra": {
+      "laravel": {
+        "providers": [
+          "InetStudio\\Sitemap\\Providers\\SitemapServiceProvider"
+        ]
+      }
+    }
+}
