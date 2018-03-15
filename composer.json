@@ -10,7 +10,7 @@
       }
     ],
     "require": {
-      "roumen/sitemap": "2.7.*"
+      "roumen/sitemap": "2.8.*"
     },
     "autoload": {
       "psr-4": {
