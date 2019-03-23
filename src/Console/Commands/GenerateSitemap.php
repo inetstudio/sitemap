@@ -3,6 +3,7 @@
 namespace InetStudio\Sitemap\Console\Commands;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 
@@ -114,7 +115,7 @@ class GenerateSitemap extends Command
      */
     private function getItemsFromSource($source)
     {
-        $resolver = array_wrap($source);
+        $resolver = Arr::wrap($source);
 
         $items = app()->call(
             array_shift($resolver), $resolver
