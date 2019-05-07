@@ -4,6 +4,7 @@ namespace InetStudio\Sitemap\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use InetStudio\Sitemap\Console\Commands\SetupCommand;
+use InetStudio\Sitemap\Console\Commands\GenerateSitemap;
 
 class SitemapServiceProvider extends ServiceProvider
 {
@@ -37,6 +38,7 @@ class SitemapServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 SetupCommand::class,
+                GenerateSitemap::class,
             ]);
         }
     }
