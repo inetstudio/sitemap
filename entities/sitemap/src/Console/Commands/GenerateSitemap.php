@@ -1,12 +1,16 @@
 <?php
 
-namespace InetStudio\Sitemap\Console\Commands;
+namespace InetStudio\SitemapPackage\Sitemap\Console\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
+/**
+ * Class GenerateSitemap.
+ */
 class GenerateSitemap extends Command
 {
     /**
@@ -14,7 +18,7 @@ class GenerateSitemap extends Command
      *
      * @var string
      */
-    protected $signature = 'inetstudio:sitemap:generate';
+    protected $signature = 'inetstudio:sitemap-package:sitemap:generate';
 
     /**
      * Описание команды.
@@ -26,7 +30,7 @@ class GenerateSitemap extends Command
     /**
      * Запуск команды.
      *
-     * @return void
+     * @throws BindingResolutionException
      */
     public function handle(): void
     {
@@ -36,9 +40,9 @@ class GenerateSitemap extends Command
             $sitemap = app()->make('sitemap');
 
             foreach ($maps as $map) {
-                $mapFormat = (isset($map['options']['format'])) ? $map['options']['format'] : 'xml';
-                $mapStyle = (isset($map['options']['style'])) ? $map['options']['style'] : 'sitemap';
-                $limit = (isset($map['options']['limit'])) ? $map['options']['limit'] : 0;
+                $mapFormat = $map['options']['format'] ?? 'xml';
+                $mapStyle = $map['options']['style'] ?? 'sitemap';
+                $limit = $map['options']['limit'] ?? 0;
 
                 $items = $this->getItems($map);
 
@@ -47,8 +51,8 @@ class GenerateSitemap extends Command
 
                 foreach ($items as $item) {
                     if ($limit > 0 && $counter == $limit) {
-                        $sitemap->store('xml', 'sitemap-' . $sitemapCounter);
-                        $sitemap->addSitemap(url('sitemap-' . $sitemapCounter . '.xml'));
+                        $sitemap->store('xml', 'sitemap-'.$sitemapCounter);
+                        $sitemap->addSitemap(url('sitemap-'.$sitemapCounter.'.xml'));
                         $sitemap->model->resetItems();
                         $counter = 0;
                         $sitemapCounter++;
@@ -75,8 +79,8 @@ class GenerateSitemap extends Command
      */
     private function getItems($map)
     {
-        $except = (isset($map['except'])) ? $map['except'] : [];
-        $sources = isset($map['sources']) ? $map['sources'] : [];
+        $except = $map['except'] ?? [];
+        $sources = $map['sources'] ?? [];
 
         $except = collect($except)->map(function ($item) {
             return ($item !== '/') ? trim($item, '/') : $item;

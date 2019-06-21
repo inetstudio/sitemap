@@ -1,27 +1,29 @@
 {
-    "name": "inetstudio/sitemap",
-    "description": "Package for sitemap",
-    "homepage": "https://github.com/inetstudio/sitemap",
-    "license": "MIT",
-    "authors": [
-      {
-        "name": "Konstantin Bukin",
-        "email": "bukin@inetstudio.ru"
-      }
-    ],
-    "require": {
-      "laravelium/sitemap": "^3.1.1"
-    },
-    "autoload": {
-      "psr-4": {
-        "InetStudio\\Sitemap\\": "src/"
-      }
-    },
-    "extra": {
-      "laravel": {
-        "providers": [
-          "InetStudio\\Sitemap\\Providers\\SitemapServiceProvider"
-        ]
-      }
+  "name": "inetstudio/sitemap",
+  "description": "Package for sitemap",
+  "homepage": "https://github.com/inetstudio/sitemap",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Konstantin Bukin",
+      "email": "bukin@inetstudio.ru"
     }
+  ],
+  "require": {
+    "laravelium/sitemap": "^3.1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "InetStudio\\SitemapPackage\\": "package/src/",
+      "InetStudio\\SitemapPackage\\Sitemap\\": "entities/sitemap/src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "InetStudio\\SitemapPackage\\Providers\\ServiceProvider",
+        "InetStudio\\SitemapPackage\\Sitemap\\Providers\\ServiceProvider"
+      ]
+    }
+  }
 }
