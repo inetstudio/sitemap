@@ -20,8 +20,6 @@ class ServiceProvider extends BaseServiceProvider
 
     /**
      * Регистрация привязки в контейнере.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -38,7 +36,7 @@ class ServiceProvider extends BaseServiceProvider
 
         $this->commands([
             'InetStudio\SitemapPackage\Sitemap\Console\Commands\SetupCommand',
-            'InetStudio\SitemapPackage\Sitemap\Console\Commands\GenerateSitemap',
+            'InetStudio\SitemapPackage\Sitemap\Contracts\Console\Commands\GenerateSitemapCommandContract',
         ]);
     }
 

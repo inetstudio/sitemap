@@ -6,12 +6,14 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use InetStudio\SitemapPackage\Sitemap\Contracts\Console\Commands\GenerateSitemapCommandContract;
 
 /**
- * Class GenerateSitemap.
+ * Class GenerateSitemapCommand.
  */
-class GenerateSitemap extends Command
+class GenerateSitemapCommand extends Command implements GenerateSitemapCommandContract
 {
     /**
      * Имя команды.
@@ -75,9 +77,9 @@ class GenerateSitemap extends Command
      *
      * @param $map
      *
-     * @return static
+     * @return Collection
      */
-    private function getItems($map)
+    protected function getItems($map): Collection
     {
         $except = $map['except'] ?? [];
         $sources = $map['sources'] ?? [];
@@ -117,14 +119,12 @@ class GenerateSitemap extends Command
      *
      * @return mixed
      */
-    private function getItemsFromSource($source)
+    protected function getItemsFromSource($source)
     {
         $resolver = Arr::wrap($source);
 
-        $items = app()->call(
+        return app()->call(
             array_shift($resolver), $resolver
         );
-
-        return $items;
     }
 }

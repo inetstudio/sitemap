@@ -22,6 +22,7 @@
     "laravel": {
       "providers": [
         "InetStudio\\SitemapPackage\\Providers\\ServiceProvider",
+        "InetStudio\\SitemapPackage\\Sitemap\\Providers\\BindingsServiceProvider",
         "InetStudio\\SitemapPackage\\Sitemap\\Providers\\ServiceProvider"
       ]
     }
