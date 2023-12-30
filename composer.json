@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "laravelium/sitemap": "^8.0"
+    "inetstudio/laravelium-sitemap": "^10.0"
   },
   "autoload": {
     "psr-4": {
